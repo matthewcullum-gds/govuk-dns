@@ -19,7 +19,11 @@ def _get_gcp_resource(records, origin, deployment_config)
 
   grouped_records.each { |subdomain_and_type, record_set|
     subdomain, type = subdomain_and_type
-    data = record_set.collect { |r| r['data'] }.sort
+    if type == "TXT"
+      data = _transform_long_record_data(record_set.collect { |r| r['data'] }.sort)
+    else
+      data = record_set.collect { |r| r['data'] }.sort
+    end
     title = _get_resource_title(subdomain, data, type)
 
     record_name = subdomain == '@' ? origin : "#{subdomain}.#{origin}"
@@ -85,4 +89,11 @@ end
 def _get_tf_safe_title(title)
   # Terraform resource records cannot contain '.'s or '@'s
   title.tr('.', '_').gsub(/@/, 'AT').gsub('*', 'WILDCARD')
+end
+
+def _transform_long_record_data(data)
+  puts "foo"
+  puts "bar"
+  puts data.inspect
+  puts data.length
 end

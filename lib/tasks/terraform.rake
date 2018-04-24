@@ -79,7 +79,7 @@ def _purge_remote_state
 end
 
 def _validate_terraform_environment
-  allowed_envs = %w(test staging integration production)
+  allowed_envs = %w(test integration staging production)
 
   unless allowed_envs.include?(deploy_env)
     abort("Please set 'DEPLOY_ENV' environment variable to one of #{allowed_envs.join(', ')}")
