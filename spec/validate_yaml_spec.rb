@@ -345,5 +345,19 @@ RSpec.describe 'Zone file field validators' do
 
       expect(ZoneFileFieldValidator.get_zone_errors(zone).length).to be 1
     end
+
+    it 'should raise an error if the GCP deployment zone name contains underscores' do
+      zone = {
+        'origin' => 'example.com.',
+        'deployment' => {
+          'gcp' => {
+            'zone_name' => 'example_com',
+            'dns_name'=> 'example.com',
+          },
+        },
+      }
+
+      expect(ZoneFileFieldValidator.get_zone_errors(zone).length).to be 1
+    end
   end
 end

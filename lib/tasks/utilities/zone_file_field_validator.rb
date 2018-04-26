@@ -154,8 +154,13 @@ module ZoneFileFieldValidator
   def self.get_zone_errors(zone_file)
     errors = []
 
+    deployment = zone_file['deployment']
     origin = zone_file['origin']
     records = zone_file['records']
+
+    if ! deployment['gcp']['zone_name'].match(/^[A-Z0-9-]+$/i)
+      errors << "Zone name can only contain letters, numbers and hyphens"
+    end
 
     if origin.nil? || origin.empty?
       errors << "Origin field must be set"
